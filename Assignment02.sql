@@ -197,14 +197,33 @@ having Count(od.ProductID) > 100;
 --    Supplier Company Name                Shipping Company Name
 
     ---------------------------------            ----------------------------------
-	SELECT
-	FROM;
+	SELECT sup.CompanyName as [Supplier Company Name], ship.CompanyName as [Shipping Company Name]
+	FROM Suppliers sup JOIN Orders
+	Shippers ship ON sup.CompanyName = ship.CompanyName
+	JOIN Orders o ON o.ShipVia = ship.ShipperID;
 
 --24.  Display the products order each day. Show Order date and Product Name.
+	SELECT p.ProductName as [Product Name], o.OrderDate as [Order Date]
+	FROM Products p JOIN [Order Details] od ON p.ProductID = od.ProductID
+	JOIN Orders o On o.OrderID = od.OrderID
 
 --25.  Displays pairs of employees who have the same job title.
+SELECT e1.EmployeeID as Employee1, e1.FirstName + ' ' + e1.LastName as Employee1Name,
+		e2.EmployeeId as employee2, e2.FirstName + ' ' + e2.LastName as Employee2Name,
+		e1.Title
+FROM Employees e1 Join Employees e2 ON e1.Title = e2.Title
+AND e1.EmployeeID < e2.EmployeeID
+Order By e1.Title, e1.EmployeeID, e2.EmployeeID
 
 --26.  Display all the Managers who have more than 2 employees reporting to them.
+SELECT * FROM Employees
+SELECT m.EmployeeID as EmployeeID, m.FirstName + ' ' + m.LastName as EmployeeName, COUNT (e.EmployeeID) AS NumbersOfReportTo
+FROM Employees e JOIN Employees m On e.ReportsTo = m.EmployeeID
+GROUP BY m.EmployeeID, m.FirstName + ' ' + m.LastName
+Having COUNT (e.EmployeeID) > 2
+
+
+
 
 --27.  Display the customers and suppliers by city. The results should have the following columns
 
