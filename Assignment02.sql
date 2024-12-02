@@ -153,23 +153,52 @@ GROUP BY O.ShipPostalCode
 Order By SaleCount desc;
 
 
---17.   List all city names and number of customers in that city.     
+--17.   List all city names and number of customers in that city.  
+SELECT c.City, COUNT( c.CustomerID) AS CustomerCount
+FROM Customers c
+GROUP BY c.City;
+
 
 --18.  List city names which have more than 2 customers, and number of customers in that city
+SELECT c.City, COUNT( c.CustomerID) As CustomerCount
+FROM Customers c
+GROUP BY c.City
+HAVING COUNT(c.CustomerID) > 2
+
+
 
 --19.  List the names of customers who placed orders after 1/1/98 with order date.
+select c.ContactName, O.OrderDate
+FROM Customers c JOIN Orders o ON C.CustomerID = o.CustomerID
+WHERE o.OrderDate > '1998-01-01'
+
 
 --20.  List the names of all customers with most recent order dates
+SELECT c.ContactName, Max (O.OrderDate) As [Most Recent Order Dates]
+FROM Customers c JOIN Orders o ON c.CustomerID = o.CustomerID
+GROUP BY c.ContactName;
 
---21.  Display the names of all customers  along with the  count of products they bought
+--21.  Display the names of all customers  along with the count of products they bought
+SELECT c.ContactName, Count(od.ProductID) AS ProductCount
+FROM Customers c JOIN Orders o on c.CustomerID = o.CustomerID
+JOIN [Order Details] od on o.OrderID = od.OrderID
+GROUP By C.ContactName;
+
 
 --22.  Display the customer ids who bought more than 100 Products with count of products.
+SELECT c.CustomerId, Count (od.ProductID) AS ProductCount
+FROM Customers c JOIN Orders o on c.CustomerID = o.CustomerID
+JOIN [Order Details] od on o.OrderID = od.OrderID
+GROUP BY c.CustomerID
+having Count(od.ProductID) > 100;
 
 --23.  List all of the possible ways that suppliers can ship their products. Display the results as below
 
 --    Supplier Company Name                Shipping Company Name
 
     ---------------------------------            ----------------------------------
+	SELECT
+	FROM;
 
 --24.  Display the products order each day. Show Order date and Product Name.
 
