@@ -234,3 +234,12 @@ Having COUNT (e.EmployeeID) > 2
 --Contact Name,
 
 --Type (Customer or Supplier)
+SELECT City, CompanyName as Name, ContactName, 'Customer' as Type
+FROM Customers
+UNION
+SELECT City, CompanyName as Name, ContactName, 'Supplier' as Type
+FROM Suppliers
+ORDER BY City, Type, Name
+
+
+
