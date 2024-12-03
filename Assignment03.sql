@@ -78,7 +78,23 @@ WHERE c.City != o.ShipCity
 
 
 --8. List 5 most popular products, their average price, and the customer city that ordered most quantity of it.
-
+WITH ProductPopularity AS (
+	SELECT p.ProductID, p. ProductName, SUM (od.Quantity) as TotalQuantity, AVG (od.UnitPrice) AS AveragePrice
+	FROM Products p JOIN [Order Details] od on p.ProductID = od.ProductID
+	GROUP BY p.ProductID, p.ProductName
+),  CityMaxQuantity as (
+	SELECT od.ProductId, c.City as CustomerCity, SUM (od.Quantity) as TotalCityQuantity
+	From [Order Details] od JOIN Orders o on od.OrderID = o.OrderID
+	JOIN Customers c ON o.CustomerID = c.CustomerID
+	GROUP BY od.ProductID, c.City
+), CityWithMaxOrders AS (
+    SELECT p.ProductID,MAX(cm.TotalCityQuantity) AS MaxCityQuantity,cm.CustomerCity
+    FROM ProductPopularity p JOIN CityMaxQuantity cm ON p.ProductID = cm.ProductID
+    GROUP BY p.ProductID, cm.CustomerCity
+)
+SELECT TOP 5 pp.ProductName, pp.AveragePrice,cmo.CustomerCity, pp.TotalQuantity
+FROM ProductPopularity pp JOIN CityWithMaxOrders cmo ON pp.ProductID = cmo.ProductID
+ORDER BY pp.TotalQuantity desc;
 
 
 --9.      List all cities that have never ordered something but we have employees there.
@@ -99,7 +115,6 @@ WHERE c.City is null
 --10.  List one city, if exists, that is the city from where the employee sold most orders (not the product quantity) is, 
 --and also the city of most total quantity of products ordered from. (tip: join  sub-query)
 
-
-
 --11. How do you remove the duplicates record of a table?
+-- usin
 
