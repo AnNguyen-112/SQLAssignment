@@ -116,5 +116,5 @@ WHERE c.City is null
 --and also the city of most total quantity of products ordered from. (tip: join  sub-query)
 
 --11. How do you remove the duplicates record of a table?
--- usin
+-- 
 
